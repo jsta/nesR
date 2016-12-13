@@ -5,7 +5,9 @@ Authors@R: person("Joseph", "Stachelek", email = "stachel2@msu.edu", role = c("a
 Description: Scrape Data from the National Eutrophication Survey archival PDF.
 Imports: purrr,
          pdftools,
-         tesseract
+         tesseract,
+         magick,
+         tiff
 Depends:
     R (>= 3.3.2)
 License: GPL-3 + file LICENSE

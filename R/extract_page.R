@@ -1,6 +1,8 @@
 
 #' extract_nes_page
 #' @export
+#' @param nes_file file.path to NES pdf
+#' @param nes_page numeric page number
 #' @importFrom pdftools pdf_render_page
 #' @importFrom tiff writeTIFF
 #' @importFrom magick image_read image_background image_flatten image_write
@@ -21,11 +23,17 @@ extract_nes_page <- function(nes_file, nes_page){
   res <- magick::image_read(tif_out)
   res <- magick::image_background(res, "white")
   res <- magick::image_flatten(res)
+
   magick::image_write(res, tif_out)
 
   tif_clean <- paste0(tempfile(), ".tif")
-
   system(paste0("convert ", tif_out, " -alpha Off ", tif_clean))
+
+  res <- magick::image_read(tif_clean)
+  res <- magick::image_contrast(magick::image_contrast(res))
+  res <- magick::image_blur(res)
+  magick::image_write(res, tif_clean)
+  # res <- magick::image_enhance(res)
 
   tif_clean
 }

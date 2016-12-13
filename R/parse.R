@@ -61,13 +61,14 @@ parse_phys_chem <- function(phys_chem_txt){
 
   alkalinity <- dt[1]
   conductivity <- dt[2]
-  tp <- dt[3]
-  po4 <- dt[4]
-  tin <- dt[5]
-  tn <- dt[6]
+  sechhi <- dt[3]
+  tp <- dt[4]
+  po4 <- dt[5]
+  tin <- dt[6]
+  tn <- dt[7]
 
-  list(alkalinity = alkalinity, conductivity = conductivity, tp = tp,
-       po4 = po4, tin = tin, tn = tn)
+  list(alkalinity = alkalinity, conductivity = conductivity, sechhi = sechhi,
+       tp = tp, po4 = po4, tin = tin, tn = tn)
 }
 
 parse_morpho <- function(morpho_txt){
