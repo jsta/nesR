@@ -79,6 +79,7 @@ parse_phys_chem <- function(phys_chem_txt){
 }
 
 parse_morpho <- function(morpho_txt){
+
   # coerce appropriate data to numerics
   dt <- strsplit(morpho_txt, " ")[[4]]
   dt <- read_ocr_dt(dt, 1, "morpho")
@@ -96,6 +97,8 @@ parse_morpho <- function(morpho_txt){
 }
 
 read_ocr_dt <- function(dt, char_pos = NA, section_name){
+
+  dt <- dt[dt != "_"]
 
   num_pos <- grep("[[:digit:]]", dt)
 
