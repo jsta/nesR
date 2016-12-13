@@ -4,6 +4,10 @@
 #' @importFrom purrr flatten
 #' @importFrom tesseract ocr
 #' @examples \dontrun{
+#' nes_file <- system.file("extdata/national-eutrophication-survey_1975.PDF",
+#'                      package = "nesR")
+#' nes_page <- 12
+#' tif_clean <- extract_nes_page(nes_file, nes_page)
 #' parse_nes(tif_clean)
 #' }
 
@@ -39,11 +43,14 @@ parse_nes <- function(tif_clean){
 }
 
 parse_metadata <- function(meta_txt){
+
   state <- strsplit(meta_txt[1], " ")[[1]]
-  state <- state[length(state) - 1]
+  state <- state[nchar(state) > 1]
+  state <- state[length(state)]
 
   name <- strsplit(meta_txt[2], "-")[[1]][2]
   name <- strsplit(name, ",")[[1]][1]
+  name <- strsplit(name, "\\(")[[1]][1]
   name <- trimws(name)
 
   county <- strsplit(meta_txt[3], "-")[[1]][2]
