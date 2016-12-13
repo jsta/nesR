@@ -41,15 +41,22 @@ parse_nes <- function(tif_clean){
     
   morphometry <- parse_morpho(ocr_txt[morpho_pos:(phys_chem_pos - 1)])
     
-  phys_chem <- ocr_txt[phys_chem_pos:(bio_pos - 1)]
+  phys_chem <- parse_phys_chem(ocr_txt[phys_chem_pos:(bio_pos - 1)])
     
-  bio <- ocr_txt[bio_pos:(nut_pos - 1)]
-    
-  nutrients <- ocr_txt[nut_pos:length(ocr_txt)]
+  # bio <- ocr_txt[bio_pos:(nut_pos - 1)]
+  #   
+  # nutrients <- ocr_txt[nut_pos:length(ocr_txt)]
   
   
-  list(metadata = metadata, morphometry = morphometry, phys_chem = phys_chem,
-       bio = bio, nutrients = nutrients)
+  res <- list(metadata = metadata,
+              morphometry = morphometry,
+              phys_chem = phys_chem
+            # bio = bio,
+            # nutrients = nutrients
+          )
+  
+  data.frame(purrr::flatten(res))
+  
 }
 
 parse_metadata <- function(meta_txt){
@@ -69,22 +76,25 @@ parse_metadata <- function(meta_txt){
   list(state = state, name = name, county = county, storet_code = storet_code)
 }
 
-parse_phys_chem <- function(){
+parse_phys_chem <- function(phys_chem_txt){
+  dt <- strsplit(phys_chem_txt, " ")[[4]]
+  dt <- read_ocr_dt(dt)
   
+  alkalinity <- dt[1]
+  conductivity <- dt[2]
+  tp <- dt[3]
+  po4 <- dt[4]
+  tin <- dt[5]
+  tn <- dt[6]
   
+  list(alkalinity = alkalinity, conductivity = conductivity, tp = tp,
+       po4 = po4, tin = tin, tn = tn)
 }
 
 parse_morpho <- function(morpho_txt){
   # coerce appropriate data to numerics
   dt <- strsplit(morpho_txt, " ")[[4]]
-  num_pos <- grep("[[:digit:]]", dt)
-  dt[2:length(dt)] <- suppressWarnings(as.numeric(dt[2:length(dt)]))
-  bad_nums <- num_pos[num_pos %in% which(is.na(dt))]
-  
-  if(length(bad_nums > 0)){
-    warning(paste0("The following morpho positions may have bad OCR: ",
-                   bad_nums))
-  }
+  dt <- read_ocr_dt(dt, 1)
   
   lake_type <- dt[1]
   drainage_area <- dt[2]
@@ -98,4 +108,22 @@ parse_morpho <- function(morpho_txt){
        total_inflow = total_inflow, retention_time = retention_time)
 }
 
+read_ocr_dt <- function(dt, char_pos = NA){
+  
+  num_pos <- grep("[[:digit:]]", dt)
+  
+  dt[!(1:length(dt) %in% char_pos)] <-
+    suppressWarnings(as.numeric(dt[!(1:length(dt) %in% char_pos)]))
+  bad_nums <- num_pos[num_pos %in% which(is.na(dt))]
+  
+  if(length(bad_nums > 0)){
+    warning(paste0("The following morpho positions may have bad OCR: ",
+                   bad_nums))
+  }
+  
+  dt
+}
+
 parse_nes(tif_clean)
+
+
