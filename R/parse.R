@@ -2,6 +2,7 @@
 #' @param tif_clean file.path to tif image for ocr
 #' @export
 #' @importFrom purrr flatten
+#' @importFrom tesseract ocr
 #' @examples \dontrun{
 #' parse_nes(tif_clean)
 #' }
@@ -56,7 +57,7 @@ parse_metadata <- function(meta_txt){
 
 parse_phys_chem <- function(phys_chem_txt){
   dt <- strsplit(phys_chem_txt, " ")[[4]]
-  dt <- read_ocr_dt(dt)
+  dt <- read_ocr_dt(dt, section_name = "phys_chem")
 
   alkalinity <- dt[1]
   conductivity <- dt[2]
@@ -72,7 +73,7 @@ parse_phys_chem <- function(phys_chem_txt){
 parse_morpho <- function(morpho_txt){
   # coerce appropriate data to numerics
   dt <- strsplit(morpho_txt, " ")[[4]]
-  dt <- read_ocr_dt(dt, 1)
+  dt <- read_ocr_dt(dt, 1, "morpho")
 
   lake_type <- dt[1]
   drainage_area <- dt[2]
@@ -86,7 +87,7 @@ parse_morpho <- function(morpho_txt){
        total_inflow = total_inflow, retention_time = retention_time)
 }
 
-read_ocr_dt <- function(dt, char_pos = NA){
+read_ocr_dt <- function(dt, char_pos = NA, section_name){
 
   num_pos <- grep("[[:digit:]]", dt)
 
@@ -95,7 +96,7 @@ read_ocr_dt <- function(dt, char_pos = NA){
   bad_nums <- num_pos[num_pos %in% which(is.na(dt))]
 
   if(length(bad_nums > 0)){
-    warning(paste0("The following morpho positions may have bad OCR: ",
+    warning(paste0("The following ", section_name, " positions may have bad OCR: ",
                    bad_nums))
   }
 

@@ -3,6 +3,5 @@
 ^README\.Rmd$
 ^README-.*\.png$
 ^ocrbook*$
-^inst$
 ^ocrbook-011_clean\.tif$
 ^ocrbook-011\.tif$

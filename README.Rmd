@@ -27,42 +27,24 @@ devtools::install_github("jsta/nesR")
 
 ## Usage
 
-```{r eval=FALSE, echo=FALSE}
-library(pdftools)
-library(tesseract)
+### Load package
 
-nes_file <- "national-eutrophication-survey_1975"
+```{r }
+library(nesR)
+```
 
-# https://gist.github.com/benmarwick/11333467
-system(paste0("pdftoppm ", nes_file, " -f 11 -l 170 -r 600 ocrbook"))
+### Prep a pdf page
 
-
-i <- "011"
-tif_base <- paste0("ocrbook-", i)
-tif_file <- paste0(tif_base, ".tif")
-system(paste0("convert ", list.files(pattern = "ppm")[1], " ", tif_file))
-
-tif_clean <- paste0(tif_base, "_clean", ".tif")
-# http://www.fmwconcepts.com/imagemagick/textcleaner/index.php
-im_cmds <- paste0(" -colorspace gray -type grayscale -contrast-stretch 0 -clone 0 -deskew 40% -sharpen 0x1 -lat 15x25+2%", " ")
-
-im_cmds <- paste0(" -lat 30x30-2%", " ")
-
-# "-c "0,50,0,0" -g -e normalize -f 15 -o 10 -u -s 2 -T -p 20 "
-#
-# "convert \( $infile -colorspace gray -type grayscale -contrast-stretch 0 \) \
-# \( -clone 0 -colorspace gray -negate -lat ${filtersize}x${filtersize}+${offset}% -contrast-stretch 0 \) \
-# -compose copy_opacity -composite -fill "$bgcolor" -opaque none +matte \
-# -deskew 40% -sharpen 0x1 \ $outfile "
-
-system(paste0("convert ", tif_file, im_cmds, tif_clean))
+```{r }
+nes_file <- system.file("extdata/national-eutrophication-survey_1975.PDF",
+                      package = "nesR")
+nes_page <- 11
+nes_page_path <- extract_nes_page(nes_file, nes_page)
 ```
 
 
-```{r eval=FALSE}
-
-parse_nes(tif_file)
-
+```{r }
+parse_nes(nes_page_path)
 ```
 
 
