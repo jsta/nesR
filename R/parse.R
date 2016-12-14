@@ -6,7 +6,7 @@
 #' @examples \dontrun{
 #' nes_file <- system.file("extdata/national-eutrophication-survey_1975.PDF",
 #'                      package = "nesR")
-#' nes_page <- 12
+#' nes_page <- 11
 #' tif_clean <- extract_nes_page(nes_file, nes_page)
 #' parse_nes(tif_clean)
 #' }
@@ -51,6 +51,7 @@ parse_metadata <- function(meta_txt){
   name <- strsplit(meta_txt[2], "-")[[1]][2]
   name <- strsplit(name, ",")[[1]][1]
   name <- strsplit(name, "\\(")[[1]][1]
+  name <- gsub("\\.", "", name)
   name <- trimws(name)
 
   county <- strsplit(meta_txt[3], "-")[[1]][2]
@@ -99,6 +100,7 @@ parse_morpho <- function(morpho_txt){
 read_ocr_dt <- function(dt, char_pos = NA, section_name){
 
   dt <- dt[dt != "_"]
+  dt[1:length(dt) %in% grep("(9){2}", dt)] <- NA # set multiple 9s to NA
 
   num_pos <- grep("[[:digit:]]", dt)
 
@@ -110,6 +112,7 @@ read_ocr_dt <- function(dt, char_pos = NA, section_name){
     warning(paste0("The following ", section_name, " positions may have bad OCR: ",
                    bad_nums))
   }
+
 
   dt
 }
