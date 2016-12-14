@@ -15,10 +15,10 @@ parse_nes <- function(tif_clean){
   ocr_txt <- tesseract::ocr(tif_clean)
   ocr_txt <- strsplit(ocr_txt, "\n")[[1]]
 
-  morpho_pos <- grep("MORPHOMETRY", ocr_txt)
+  morpho_pos <- grep("MORPH", ocr_txt)
   phys_chem_pos <- grep("PHYSICAL", ocr_txt)
   bio_pos <- grep("BIOLOGICAL", ocr_txt)
-  nut_pos <- grep("NUTRIENT", ocr_txt)
+  nut_pos <- grep("IV", ocr_txt)
 
   metadata <- parse_metadata(ocr_txt[1:(morpho_pos - 1)])
 
@@ -38,7 +38,7 @@ parse_nes <- function(tif_clean){
               # nutrients = nutrients
   )
 
-  data.frame(purrr::flatten(res))
+  data.frame(purrr::flatten(res), stringsAsFactors = FALSE)
 
 }
 
