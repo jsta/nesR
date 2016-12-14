@@ -19,7 +19,7 @@ nes_get
 nes_file <- system.file("extdata/national-eutrophication-survey_1975.PDF",
                      package = "nesR")
 nes_page <- 11
-get_nes(nes_file, nes_page)
+nes_get(nes_file, nes_page)
 }
 }
 
