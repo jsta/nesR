@@ -17,8 +17,10 @@ extract_nes_page <- function(nes_file, nes_page){
 
   pdf_page <- pdftools::pdf_render_page(nes_file, page = nes_page, dpi = 600)
 
-  tif_out <- paste0(tempfile(), ".tif")
-  tiff::writeTIFF(pdf_page, tif_out)
+  # tif_out <- paste0(tempfile(), ".tif")
+  # tiff::writeTIFF(pdf_page, tif_out)
+  tif_out <- paste0(tempfile(), ".png")
+  png::writePNG(pdf_page, tif_out)
 
   res <- magick::image_read(tif_out)
   res <- magick::image_background(res, "white")
@@ -27,7 +29,7 @@ extract_nes_page <- function(nes_file, nes_page){
   magick::image_write(res, tif_out)
 
   tif_clean <- paste0(tempfile(), ".tif")
-  system(paste0("convert ", tif_out, " -alpha Off ", tif_clean))
+  system(paste0("convert ", tif_out, " -alpha Off -lat 30x30-2% ", tif_clean))
 
   res <- magick::image_read(tif_clean)
   res <- magick::image_contrast(magick::image_contrast(res))

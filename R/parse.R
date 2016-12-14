@@ -15,7 +15,8 @@ parse_nes <- function(tif_clean){
   ocr_txt <- tesseract::ocr(tif_clean)
   ocr_txt <- strsplit(ocr_txt, "\n")[[1]]
 
-  morpho_pos <- grep("MORPH", ocr_txt)
+  # morpho_pos <- grep("MORPH", ocr_txt)
+  morpho_pos <- grep("^1. |^I. ", ocr_txt)
   phys_chem_pos <- grep("PHYSICAL", ocr_txt)
   bio_pos <- grep("BIOLOGICAL", ocr_txt)
   nut_pos <- grep("IV", ocr_txt)
@@ -43,7 +44,6 @@ parse_nes <- function(tif_clean){
 }
 
 parse_metadata <- function(meta_txt){
-
   state <- strsplit(meta_txt[1], " ")[[1]]
   state <- state[nchar(state) > 1]
   state <- state[length(state)]
@@ -56,6 +56,7 @@ parse_metadata <- function(meta_txt){
 
   county <- strsplit(meta_txt[3], "-")[[1]][2]
   county <- trimws(county)
+  county <- gsub(":", ",", county)
 
   storet_code <- strsplit(meta_txt[4], "-")[[1]][2]
   storet_code <- strsplit(storet_code, " ")[[1]][2]
@@ -81,8 +82,15 @@ parse_phys_chem <- function(phys_chem_txt){
 
 parse_morpho <- function(morpho_txt){
 
+  dt <- strsplit(morpho_txt, " ")
+
+  if(length(dt) < 4){ # see if morpho numbers are missing
+    dt <- c(dt, paste0(rep(NA, 6), collapse = " "))
+  }
+
+  dt <- dt[[4]]
+
   # coerce appropriate data to numerics
-  dt <- strsplit(morpho_txt, " ")[[4]]
   dt <- read_ocr_dt(dt, 1, "morpho")
 
   lake_type <- dt[1]
@@ -100,7 +108,11 @@ parse_morpho <- function(morpho_txt){
 read_ocr_dt <- function(dt, char_pos = NA, section_name){
 
   dt <- dt[dt != "_"]
-  dt[1:length(dt) %in% grep("(9){2}", dt)] <- NA # set multiple 9s to NA
+
+  # check nes_get(nes_file, 15) preserves tp?
+
+  dt[1:length(dt) %in% grep("9.{3}", dt)] <- NA # set multiple 9s to NA
+  # dt[1:length(dt) %in% grep("(9){2}", dt)] <- NA # set multiple 9s to NA
 
   num_pos <- grep("[[:digit:]]", dt)
 
