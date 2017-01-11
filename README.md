@@ -3,10 +3,14 @@
 nesR
 ====
 
-Code to scrape data from the National Eutrophication Survey archival PDF
+Code to rescue (scrape) data from the National Eutrophication Survey archival PDF.
 
 Installation
 ------------
+
+### Prerequites
+
+Until `magick` can handle local adaptive thresholding. This package requires you to be able to call the `imagemagick` `convert` command with `system()`.
 
 You can install nesR from github with:
 
@@ -33,21 +37,12 @@ nes_file <- system.file("extdata/national-eutrophication-survey_1975.PDF",
 pages <- c(11, 12)
 
 lapply(pages, function(x) nes_get(nes_file, x))
-#> Warning in read_ocr_dt(dt, 1, "morpho"): The following morpho positions may
-#> have bad OCR: 6
-#> [[1]]
-#>     state       name county storet_code lake_type drainage_area
-#> 1 ARIZONA BIG LAKE . APACHE        0401   NATURAL    9999999999
-#>   surface_area mean_depth total_inflow retention_time alkalinity
-#> 1         1.94        4.4   9999999999         999999         77
-#>   conductivity sechhi    tp   po4  tin   tn
-#> 1          101    2.9 0.032 0.007 0.09 0.82
-#> 
-#> [[2]]
-#>     state              name county storet_code   lake_type drainage_area
-#> 1 ARIZONA FOOLS'HOLLOH LAKE NAVAJO        0402 IMPOUNDMENT         282.3
-#>   surface_area mean_depth total_inflow retention_time alkalinity
-#> 1         0.57          7         0.08           <NA>         81
-#>   conductivity sechhi    tp   po4  tin   tn
-#> 1          152    0.8 0.059 0.014 0.09 0.66
+  
 ```
+
+References
+==========
+
+Brett, M. T., and M. M. Benjamin. 2007. A review and reassessment of lake phosphorus retention and the nutrient loading concept. Freshwater Biology.
+
+Reckhow, K. H. 1988. Empirical models for trophic state in southeastern US lakes and reservoirs.
