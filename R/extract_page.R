@@ -5,6 +5,7 @@
 #' @param nes_page numeric page number
 #' @importFrom pdftools pdf_render_page
 #' @importFrom tiff writeTIFF
+#' @importFrom png writePNG
 #' @importFrom magick image_read image_background image_flatten image_write
 #' @examples \dontrun{
 #' nes_file <- system.file("extdata/national-eutrophication-survey_1975.PDF",
