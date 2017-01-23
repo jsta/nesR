@@ -2,7 +2,7 @@
 # git clone https://github.com/jsta/nesR.git
 # sudo apt-get make
 # cd nesR
-# make
+# make R
 
 
 prep:

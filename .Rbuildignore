@@ -5,3 +5,4 @@
 ^ocrbook*$
 ^ocrbook-011_clean\.tif$
 ^ocrbook-011\.tif$
+^Makefile$
