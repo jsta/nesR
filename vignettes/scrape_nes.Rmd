@@ -1,0 +1,21 @@
+---
+title: "Scrape the NES archival pdf"
+author: "Joseph Stachelek"
+date: "`r Sys.Date()`"
+output: rmarkdown::html_vignette
+vignette: >
+  %\VignetteIndexEntry{Screape the NES archival pdf}
+  %\VignetteEngine{knitr::rmarkdown}
+  %\VignetteEncoding{UTF-8}
+---
+
+```{r }
+library(nesR)
+nes_file <- system.file("extdata/national-eutrophication-survey_1975.PDF", 
+                        package = "nesR")
+
+pages <- c(11:77, 79:91, 93:107, 109:139: 141:157, 159:160, 162:170)
+
+lapply(c(11:12), function(x) nes_get(nes_file, x))
+
+```
