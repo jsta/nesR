@@ -4,4 +4,6 @@ print(args)
 library(nesR)
 nes_file <- nes_file <- system.file("extdata/national-eutrophication-survey_1975.PDF",
                                     package = "nesR")
-nes_get(nes_file, args)
+
+res <- nes_get(nes_file, as.numeric(args))
+write(res, file = "res.csv", append = TRUE)
