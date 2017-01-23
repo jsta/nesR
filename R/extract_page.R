@@ -34,7 +34,7 @@ extract_nes_page <- function(nes_file, nes_page){
 
   res <- magick::image_read(tif_clean)
   res <- magick::image_contrast(magick::image_contrast(res))
-  res <- magick::image_blur(res, radius = 1, sigma = 50)
+  # res <- magick::image_blur(res, radius = 1, sigma = 50)
   magick::image_write(res, tif_clean)
   # res <- magick::image_enhance(res)
 
