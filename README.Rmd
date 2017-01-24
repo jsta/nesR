@@ -50,14 +50,11 @@ library(nesR)
 
 ### Get data 
 
-```{r eval=FALSE}
-nes_file <- system.file("extdata/national-eutrophication-survey_1975.PDF",
-                      package = "nesR")
+```{r eval=TRUE}
+nes_file <- system.file("extdata/national-eutrophication-survey_1975.PDF", 
+                        package = "nesR")
 
-pages <- c(11, 12)
-
-lapply(pages, function(x) nes_get(nes_file, x))
-  
+nes_get(nes_file, 11)
 ```
 
 # References

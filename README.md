@@ -31,13 +31,18 @@ library(nesR)
 ### Get data
 
 ``` r
-nes_file <- system.file("extdata/national-eutrophication-survey_1975.PDF",
-                      package = "nesR")
+nes_file <- system.file("extdata/national-eutrophication-survey_1975.PDF", 
+                        package = "nesR")
 
-pages <- c(11, 12)
-
-lapply(pages, function(x) nes_get(nes_file, x))
-  
+nes_get(nes_file, 11)
+#> Warning in read_ocr_dt(dt, 1, "morpho"): The following morpho positions may
+#> have bad OCR: 3
+#>     state     name county storet_code lake_type drainage_area surface_area
+#> 1 ARIZONA BIG LAKE APACHE        0401   NATURAL          <NA>         <NA>
+#>   mean_depth total_inflow retention_time alkalinity conductivity sechhi
+#> 1        4.4         <NA>           <NA>         77          101    2.9
+#>      tp   po4  tin   tn
+#> 1 0.032 0.007 0.09 0.82
 ```
 
 References
