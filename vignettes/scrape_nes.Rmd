@@ -10,10 +10,15 @@ vignette: >
 ---
 
 ```{r eval=FALSE}
-pages <- c(11:77, 79:91, 93:107, 109:139, 141:157, 159:160, 162:170)
+pages <- c(11:60, 62:77, 79:91, 93:107, 109:139, 141:157, 159:160, 162:170)
+# pages <- c(146:157, 159:160, 162:170)
 write(pages, "vignettes/pages.txt")
 ```
 
 ```{bash eval=FALSE}
 bash scrape_nes.sh
+```
+
+```{r bash eval=FALSE}
+wget https://geonames.usgs.gov/docs/stategaz/AllStates_20161201.zip
 ```

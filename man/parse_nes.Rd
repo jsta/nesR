@@ -4,21 +4,22 @@
 \alias{parse_nes}
 \title{parse_nes}
 \usage{
-parse_nes(tif_clean)
+parse_nes(ocr_txt)
 }
 \arguments{
-\item{tif_clean}{file.path to tif image for ocr}
+\item{ocr_txt}{character vector of ocr'd text}
 }
 \description{
 parse_nes
 }
 \examples{
 \dontrun{
-nes_file <- system.file("extdata/national-eutrophication-survey_1975.PDF",
+nes_file <- system.file("extdata/national-eutrophication-survey_477.PDF",
                      package = "nesR")
 nes_page <- 11
 tif_clean <- extract_nes_page(nes_file, nes_page)
-parse_nes(tif_clean)
+raw_txt <- ocr_nes_page(tif_clean)
+parse_nes(raw_txt)
 }
 }
 

@@ -16,7 +16,7 @@ nes_get
 }
 \examples{
 \dontrun{
-nes_file <- system.file("extdata/national-eutrophication-survey_1975.PDF",
+nes_file <- system.file("extdata/national-eutrophication-survey_477.PDF",
                      package = "nesR")
 nes_page <- 11
 nes_get(nes_file, nes_page)

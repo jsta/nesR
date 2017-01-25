@@ -2,6 +2,7 @@
 
 export(extract_nes_page)
 export(nes_get)
+export(ocr_nes_page)
 export(parse_nes)
 importFrom(magick,image_background)
 importFrom(magick,image_flatten)
