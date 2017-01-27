@@ -17,3 +17,8 @@ cleancsvs: $(CLEANNAMES)
 
 %_clean.csv: %.csv
 	-Rscript -e 'write.csv(nesR::parse_nes(read.csv("$<", stringsAsFactors = FALSE)[,1]), "$@", row.names = FALSE)'
+
+res.csv: cleancsvs
+	Rscript vignettes/gather_nes.R
+
+all: res.csv
