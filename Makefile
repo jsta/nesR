@@ -16,4 +16,4 @@ cleancsvs: $(CLEANNAMES)
 	Rscript -e 'write.csv(nesR::nes_get(system.file("extdata/national-eutrophication-survey_477.PDF", package = "nesR"), $(basename $@)), "$@", row.names = FALSE)'
 
 %_clean.csv: %.csv
-	Rscript -e 'nesR::parse_nes(read.csv("$<", stringsAsFactors = FALSE)[,1])'
+	-Rscript -e 'write.csv(nesR::parse_nes(read.csv("$<", stringsAsFactors = FALSE)[,1]), "$@", row.names = FALSE)'

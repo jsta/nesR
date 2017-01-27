@@ -17,7 +17,7 @@ parse_nes <- function(ocr_txt){
   morpho_pos <- grep("^1. |^I. ", ocr_txt)
   phys_chem_pos <- grep("PHYSICAL", ocr_txt)
   bio_pos <- grep("BIOLOGICAL", ocr_txt)
-  nut_pos <- grep("IV", ocr_txt)
+  nut_pos <- grep("iv\\.", tolower(ocr_txt))
 
   metadata <- parse_metadata(ocr_txt[1:(morpho_pos - 1)])
 
@@ -26,8 +26,8 @@ parse_nes <- function(ocr_txt){
   phys_chem <- parse_phys_chem(ocr_txt[phys_chem_pos:(bio_pos - 1)])
 
   # bio <- ocr_txt[bio_pos:(nut_pos - 1)]
-  #
-  # nutrients <- ocr_txt[nut_pos:length(ocr_txt)]
+
+  # nutrients <- parse_nuts(ocr_txt[nut_pos:length(ocr_txt)])
 
 
   res <- list(metadata = metadata,
@@ -78,6 +78,28 @@ parse_phys_chem <- function(phys_chem_txt){
        tp = tp, po4 = po4, tin = tin, tn = tn)
 }
 
+parse_nuts <- function(nut_txt){
+
+  handle_nutrient <- function(dt, prefix){
+
+    pnt_source_muni       <- dt[2]
+    pnt_source_industrial <- dt[3]
+    pnt_source_septic     <- dt[4]
+    nonpnt_source         <- dt[5]
+    total                 <- dt[6]
+
+
+  }
+
+  phosphorus <- read_ocr_dt(strsplit(nut_txt, " ")[[5]], section_name = "nuts")
+  phosphorus <- handle_nutrient(phosphorus, prefix = "p")
+  nitrogen   <- read_ocr_dt(strsplit(nut_txt, " ")[[6]], section_name = "nuts")
+
+  dt <- cbind(phosphorus, nitrogen)
+
+  list(pnt_source_muni = pnt_source_muni, pnt_source_industrial = pnt_source_industrial, pnt_source_septic = pnt_source_septic, nonpnt_source = nonpnt_source, total = total)
+}
+
 parse_morpho <- function(morpho_txt){
 
   dt <- strsplit(morpho_txt, " ")
@@ -106,6 +128,7 @@ parse_morpho <- function(morpho_txt){
 read_ocr_dt <- function(dt, char_pos = NA, section_name){
 
   dt <- dt[dt != "_"]
+  dt <- dt[dt != "-"]
 
   # check nes_get(nes_file, 15) preserves tp?
 
@@ -122,7 +145,6 @@ read_ocr_dt <- function(dt, char_pos = NA, section_name){
     warning(paste0("The following ", section_name, " positions may have bad OCR: ",
                    bad_nums))
   }
-
 
   dt
 }
