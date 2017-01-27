@@ -5,13 +5,13 @@
 
 sudo add-apt-repository ppa:marutter/rrutter
 sudo apt-get update
-sudo apt-get install curl libssl-dev openssl libcurl4-openssl-dev
-sudo apt-get install imagemagick libmagick++-dev
-sudo apt-get install libtesseract-dev libleptonica-dev tesseract-ocr-eng
-sudo apt-get install libpoppler-cpp-dev
+sudo apt-get -y install curl libssl-dev openssl libcurl4-openssl-dev
+sudo apt-get -y install imagemagick libmagick++-dev
+sudo apt-get -y install libtesseract-dev libleptonica-dev tesseract-ocr-eng
+sudo apt-get -y install libpoppler-cpp-dev
 
 
-sudo apt-get install r-base-core
+sudo apt-get -y install r-base-core
 sudo Rscript -e "install.packages('devtools', repos = 'https://cloud.r-project.org')"
 sudo Rscript -e "install.packages('magick', repos = 'https://cloud.r-project.org')"
 sudo Rscript -e "install.packages('tesseract', repos = 'https://cloud.r-project.org')"
