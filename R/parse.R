@@ -3,12 +3,7 @@
 #' @export
 #' @importFrom purrr flatten
 #' @examples \dontrun{
-#' nes_file <- system.file("extdata/national-eutrophication-survey_477.PDF",
-#'                      package = "nesR")
-#' nes_page <- 11
-#' tif_clean <- extract_nes_page(nes_file, nes_page)
-#' raw_txt <- ocr_nes_page(tif_clean)
-#' parse_nes(raw_txt)
+#' parse_nes(read.csv(system.file("extdata/477_page-012.csv", package = "nesR"), stringsAsFactors = FALSE)[,1])
 #' }
 
 parse_nes <- function(ocr_txt){
@@ -27,14 +22,14 @@ parse_nes <- function(ocr_txt){
 
   # bio <- ocr_txt[bio_pos:(nut_pos - 1)]
 
-  # nutrients <- parse_nuts(ocr_txt[nut_pos:length(ocr_txt)])
+  nutrients <- parse_nuts(ocr_txt[nut_pos:length(ocr_txt)])
 
 
   res <- list(metadata = metadata,
               morphometry = morphometry,
-              phys_chem = phys_chem
+              phys_chem = phys_chem,
               # bio = bio,
-              # nutrients = nutrients
+              nutrients = nutrients
   )
 
   data.frame(purrr::flatten(res), stringsAsFactors = FALSE)
@@ -80,24 +75,49 @@ parse_phys_chem <- function(phys_chem_txt){
 
 parse_nuts <- function(nut_txt){
 
-  handle_nutrient <- function(dt, prefix){
-
+  handle_input_nutrient <- function(dt, prefix){
     pnt_source_muni       <- dt[2]
     pnt_source_industrial <- dt[3]
     pnt_source_septic     <- dt[4]
     nonpnt_source         <- dt[5]
     total                 <- dt[6]
 
-
+    res <- list(pnt_source_muni = pnt_source_muni,
+                pnt_source_industrial = pnt_source_industrial,
+                pnt_source_septic = pnt_source_septic,
+                nonpnt_source = nonpnt_source,
+                total = total)
+    names(res) <- paste0(prefix, "_", names(res))
+    res
   }
 
-  phosphorus <- read_ocr_dt(strsplit(nut_txt, " ")[[5]], section_name = "nuts")
-  phosphorus <- handle_nutrient(phosphorus, prefix = "p")
-  nitrogen   <- read_ocr_dt(strsplit(nut_txt, " ")[[6]], section_name = "nuts")
+  handle_output_nutrient <- function(dt, prefix){
+    total_out            <- dt[2]
+    percent_retention    <- dt[3]
+    surface_area_loading <- dt[4]
 
-  dt <- cbind(phosphorus, nitrogen)
+    res <- list(total_out = total_out,
+                percent_retention = percent_retention,
+                surface_area_loading = surface_area_loading)
+    names(res) <- paste0(prefix, "_", names(res))
+    res
+  }
 
-  list(pnt_source_muni = pnt_source_muni, pnt_source_industrial = pnt_source_industrial, pnt_source_septic = pnt_source_septic, nonpnt_source = nonpnt_source, total = total)
+  phosphorus_in <- read_ocr_dt(strsplit(nut_txt, " ")[[5]],
+                               section_name = "nuts")
+  phosphorus_out <- read_ocr_dt(strsplit(nut_txt, " ")[[10]],
+                               section_name = "nuts")
+  nitrogen_in   <- read_ocr_dt(strsplit(nut_txt, " ")[[6]],
+                            section_name = "nuts")
+  nitrogen_out <- read_ocr_dt(strsplit(nut_txt, " ")[[11]],
+                                section_name = "nuts")
+
+  phosphorus_in  <- handle_input_nutrient(phosphorus_in, prefix = "p")
+  nitrogen_in    <- handle_input_nutrient(nitrogen_in, prefix = "n")
+  phosphorus_out <- handle_output_nutrient(phosphorus_out, prefix = "p")
+  nitrogen_out   <- handle_output_nutrient(nitrogen_out, prefix = "n")
+
+  c(phosphorus_in, nitrogen_in, phosphorus_out, nitrogen_out)
 }
 
 parse_morpho <- function(morpho_txt){
