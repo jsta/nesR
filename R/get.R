@@ -14,7 +14,7 @@ nes_get <- function(nes_file, nes_page){
   tif_clean <- extract_nes_page(nes_file, nes_page)
   raw_txt   <- ocr_nes_page(tif_clean)
   unlink(tif_clean)
-  parse_nes(raw_txt)
+  raw_txt
 }
 
 
