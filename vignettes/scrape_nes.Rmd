@@ -4,7 +4,7 @@ author: "Joseph Stachelek"
 date: "`r Sys.Date()`"
 output: rmarkdown::html_vignette
 vignette: >
-  %\VignetteIndexEntry{Screape the NES archival pdf}
+  %\VignetteIndexEntry{Scrape the NES archival pdf}
   %\VignetteEngine{knitr::rmarkdown}
   %\VignetteEncoding{UTF-8}
 ---
@@ -12,13 +12,10 @@ vignette: >
 ```{r eval=FALSE}
 pages <- c(11:60, 62:77, 79:91, 93:107, 109:139, 141:157, 159:160, 162:170)
 # pages <- c(146:157, 159:160, 162:170)
-write(pages, "vignettes/pages.txt")
+write(paste0(pages, ".csv"), "vignettes/pages.txt")
+write(paste0(pages, "_clean.csv"), "vignettes/pages_clean.txt")
 ```
 
 ```{bash eval=FALSE}
-bash scrape_nes.sh
-```
-
-```{r bash eval=FALSE}
-wget https://geonames.usgs.gov/docs/stategaz/AllStates_20161201.zip
+make cleancsvs
 ```
