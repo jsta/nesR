@@ -51,10 +51,21 @@ library(nesR)
 ### Get data 
 
 ```{r eval=TRUE}
-nes_file <- system.file("extdata/national-eutrophication-survey_1975.PDF", 
+nes_file <- system.file("extdata/national-eutrophication-survey_477.PDF", 
                         package = "nesR")
 
 nes_get(nes_file, 11)
+```
+
+### Build database
+
+As written, building the NES database requires GNU Make and the ability to run `R` commands using the `Rscript` command-line utility (aka doesn't work on Windows).
+
+```{bash eval=FALSE}
+make PDFSOURCE=474 all
+make PDFSOURCE=475 all
+make PDFSOURCE=476 all
+make PDFSOURCE=477 all
 ```
 
 # References

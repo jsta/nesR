@@ -18,7 +18,7 @@ nes_get
 \dontrun{
 nes_file <- system.file("extdata/national-eutrophication-survey_477.PDF",
                      package = "nesR")
-nes_page <- 11
+nes_page <- 12
 nes_get(nes_file, nes_page)
 }
 }

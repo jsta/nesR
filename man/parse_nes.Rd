@@ -14,12 +14,7 @@ parse_nes
 }
 \examples{
 \dontrun{
-nes_file <- system.file("extdata/national-eutrophication-survey_477.PDF",
-                     package = "nesR")
-nes_page <- 11
-tif_clean <- extract_nes_page(nes_file, nes_page)
-raw_txt <- ocr_nes_page(tif_clean)
-parse_nes(raw_txt)
+parse_nes(read.csv(system.file("extdata/477_page-012.csv", package = "nesR"), stringsAsFactors = FALSE)[,1])
 }
 }
 

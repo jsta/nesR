@@ -1,24 +1,17 @@
-PAGES := vignettes/pages.txt
-FNAMES := $(shell cat ${PAGES})
-CLEANPAGES := vignettes/pages_clean.txt
-CLEANNAMES := $(shell cat ${CLEANPAGES})
 
-dg:
-	cat $(PAGES)
+createdir:
+	-mkdir -p $(PDFSOURCE)
 
-csvs: $(FNAMES)
-	echo ocr done
+$(PDFSOURCE)/Makefile: createdir Maketemplate
+	cp Maketemplate $(PDFSOURCE)/Makefile
 
-cleancsvs: $(CLEANNAMES)
-	echo parse done
+$(PDFSOURCE)/pages.txt: createdir
+	Rscript -e 'nesR::generate_page_list($(PDFSOURCE), $(PDFSOURCE))'
 
-%.csv:
-	Rscript -e 'write.csv(nesR::nes_get(system.file("extdata/national-eutrophication-survey_477.PDF", package = "nesR"), $(basename $@)), "$@", row.names = FALSE)'
+pagelist: $(PDFSOURCE)/pages.txt
 
-%_clean.csv: %.csv
-	-Rscript -e 'write.csv(nesR::parse_nes(read.csv("$<", stringsAsFactors = FALSE)[,1]), "$@", row.names = FALSE)'
+#pagelist
+runmakefile: $(PDFSOURCE)/Makefile
+	make -C $(PDFSOURCE) all
 
-res.csv: cleancsvs
-	Rscript vignettes/gather_nes.R
-
-all: res.csv
+all: runmakefile
