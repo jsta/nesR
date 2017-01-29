@@ -10,8 +10,7 @@ $(PDFSOURCE)/pages.txt: createdir
 
 pagelist: $(PDFSOURCE)/pages.txt
 
-#pagelist
-runmakefile: $(PDFSOURCE)/Makefile
+runmakefile: $(PDFSOURCE)/Makefile pagelist
 	make -C $(PDFSOURCE) all
 
 all: runmakefile
