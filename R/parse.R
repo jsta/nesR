@@ -63,6 +63,7 @@ parse_metadata <- function(meta_txt){
   state <- state[nchar(state) > 1]
   state <- state[length(state)]
   state <- gsub("-", "", state)
+	state <- fuzzy_replace_word(toupper(state.name), state)
 
   name <- strsplit(meta_txt[2], "-")[[1]][2]
 	name <- strsplit(name, " ")[[1]]
@@ -83,6 +84,7 @@ parse_metadata <- function(meta_txt){
   name <- strsplit(name, "\\(")[[1]][1]
   name <- gsub("\\.", "", name)
   name <- trimws(name)
+  name <- toupper(name)
 
   county <- strsplit(meta_txt[3], "-")[[1]][2]
   county <- trimws(county)
@@ -172,19 +174,7 @@ parse_morpho <- function(morpho_txt){
   # coerce appropriate data to numerics
   dt <- read_ocr_dt(dt, 1, "morpho")
 
-  fuzzy_replace_word <- function(dt){
-  	bad_word_pos <- agrep("impoundment", tolower(dt))
-  	if(length(bad_word_pos) > 0){
-  		dt <- "IMPOUNDMENT"
-  	}
-  	bad_word_pos <- agrep("natural", tolower(dt))
-  	if(length(bad_word_pos) > 0){
-  		dt <- "NATURAL"
-  	}
-  	dt[1]
-  }
-
-  lake_type <- fuzzy_replace_word(dt[1])
+  lake_type <- fuzzy_replace_word(toupper(c("impoundment", "natural")), dt[1])
   drainage_area <- dt[2]
   surface_area <- dt[3]
   mean_depth <- dt[4]
@@ -218,4 +208,18 @@ read_ocr_dt <- function(dt, char_pos = NA, section_name){
   }
 
   dt
+}
+
+fuzzy_replace_word <- function(txt, dt){
+	replace_word <- function(txt, dt){
+		bad_word_pos <- agrep(txt, toupper(dt), max.distance = 0.2)
+		if(length(bad_word_pos) > 0){
+			txt
+		}
+	}
+	res <- unlist(lapply(txt, function(x) replace_word(x, dt)))
+	if(length(res) > 0){
+		dt <- res
+	}
+	strsplit(dt, " ")[[1]][1]
 }
