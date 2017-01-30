@@ -7,12 +7,10 @@
 #' }
 
 parse_nes <- function(ocr_txt){
-
-  # morpho_pos <- grep("MORPH", ocr_txt)
-  morpho_pos <- grep("^1. |^I. ", ocr_txt)
+  morpho_pos <- grep("^1. |^I. |\\sI\\.\\s", ocr_txt)
   phys_chem_pos <- grep("PHYSICAL", ocr_txt)
   bio_pos <- grep("BIOLOGICAL", ocr_txt)
-  nut_pos <- grep("iv\\.", tolower(ocr_txt))
+  nut_pos <- grep("iv\\.|1v\\.", tolower(ocr_txt))
 
   metadata <- parse_metadata(ocr_txt[1:(morpho_pos - 1)])
 
