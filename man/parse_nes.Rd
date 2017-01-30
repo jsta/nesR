@@ -14,7 +14,9 @@ parse_nes
 }
 \examples{
 \dontrun{
-parse_nes(read.csv(system.file("extdata/477_page-012.csv", package = "nesR"), stringsAsFactors = FALSE)[,1])
+parse_nes(read.csv(system.file(
+"extdata/477_page-012.csv", package = "nesR"),
+ stringsAsFactors = FALSE)[,1])
 }
 }
 

@@ -3,7 +3,9 @@
 #' @export
 #' @importFrom purrr flatten
 #' @examples \dontrun{
-#' parse_nes(read.csv(system.file("extdata/477_page-012.csv", package = "nesR"), stringsAsFactors = FALSE)[,1])
+#' parse_nes(read.csv(system.file(
+#' "extdata/477_page-012.csv", package = "nesR"),
+#'  stringsAsFactors = FALSE)[,1])
 #' }
 
 parse_nes <- function(ocr_txt){
@@ -52,7 +54,7 @@ parse_metadata <- function(meta_txt){
 	meta_txt <- gsub(",", "", meta_txt)
 	meta_txt <- gsub("_", "", meta_txt)
 	meta_txt <- gsub("'", "", meta_txt)
-	meta_txt <- gsub("‘", "", meta_txt)
+	meta_txt <- gsub("\u2018", "", meta_txt) #stylized single quote
 	meta_txt <- gsub("\\.", "", meta_txt)
 	meta_txt <- gsub(":", ",", meta_txt)
 	meta_txt <- gsub("\\|", "", meta_txt)
@@ -86,7 +88,7 @@ parse_metadata <- function(meta_txt){
   county <- trimws(county)
 
   storet_code <- substring(meta_txt[4], 0, 30)
-  storet_code <- gsub("—", "-", storet_code)
+  storet_code <- gsub("\u2014", "-", storet_code) # long dash
   storet_code <- strsplit(storet_code, "-")[[1]][2]
   storet_code <- strsplit(storet_code, " ")[[1]][2]
   storet_code <- as.numeric(storet_code)
