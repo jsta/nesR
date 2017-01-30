@@ -76,9 +76,7 @@ parse_metadata <- function(meta_txt){
 	name <- fuzzy_strip_word("eutrophic", name)
 	name <- fuzzy_strip_word("mesotrophic", name)
 	name <- fuzzy_strip_word("oligotrophic", name)
-
 	name <- trimws(paste(name, collapse = " "))
-
   name <- strsplit(name, ",")[[1]][1]
   name <- strsplit(name, "\\(")[[1]][1]
   name <- gsub("\\.", "", name)
@@ -87,8 +85,11 @@ parse_metadata <- function(meta_txt){
   county <- strsplit(meta_txt[3], "-")[[1]][2]
   county <- trimws(county)
 
-  storet_code <- strsplit(meta_txt[4], "-")[[1]][2]
+  storet_code <- substring(meta_txt[4], 0, 30)
+  storet_code <- gsub("—", "-", storet_code)
+  storet_code <- strsplit(storet_code, "-")[[1]][2]
   storet_code <- strsplit(storet_code, " ")[[1]][2]
+  storet_code <- as.numeric(storet_code)
 
   list(state = state, name = name, county = county, storet_code = storet_code)
 }
