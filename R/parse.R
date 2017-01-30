@@ -175,6 +175,8 @@ parse_morpho <- function(morpho_txt){
   dt <- read_ocr_dt(dt, 1, "morpho")
 
   lake_type <- fuzzy_replace_word(toupper(c("impoundment", "natural")), dt[1])
+  if(nchar(lake_type) < 2){lake_type <- NA}
+
   drainage_area <- dt[2]
   surface_area <- dt[3]
   mean_depth <- dt[4]
