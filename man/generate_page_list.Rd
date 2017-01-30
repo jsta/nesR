@@ -15,6 +15,8 @@ generate_page_list(pdfsource, outdir = ".")
 generate_page_list
 }
 \examples{
+\dontrun{
 generate_page_list(477)
+}
 }
 
