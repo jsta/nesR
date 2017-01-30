@@ -7,10 +7,22 @@
 #' }
 
 parse_nes <- function(ocr_txt){
-  morpho_pos <- grep("^1. |^I. |\\sI\\.\\s|^\\'I\\.", ocr_txt)
-  phys_chem_pos <- grep("^II\\. | PHYSICAL", ocr_txt)
-  bio_pos <- grep("III\\. | BIOLOGICAL |111\\.", ocr_txt)
-  nut_pos <- grep("iv\\.|1v\\.", tolower(ocr_txt))
+  morpho_pos <- grep("^1. |^I. |^I.-|\\sI\\.\\s|^\\'I\\.|^l\\.", ocr_txt)
+  phys_chem_pos <- grep("^II\\. | PHYSICAL|^11\\.|^I\\]\\.", ocr_txt)
+  bio_pos <- grep("III\\. | BIOLOGICAL |111\\.|III\\.", ocr_txt)
+  nut_pos <- grep("iv\\.|1v\\.| nutrient loading", tolower(ocr_txt))
+  # c(morpho_pos, phys_chem_pos, bio_pos, nut_pos)
+
+  if(length(morpho_pos) == 0 | any(morpho_pos > 8)){
+  	morpho_pos <- 5
+  }
+  if(length(phys_chem_pos) > 1){
+  	phys_chem_pos <- 9
+  }
+  if(length(bio_pos) == 0){
+  	bio_pos <- 13
+  }
+
 
   metadata <- parse_metadata(ocr_txt[1:(morpho_pos - 1)])
 
@@ -35,11 +47,38 @@ parse_nes <- function(ocr_txt){
 }
 
 parse_metadata <- function(meta_txt){
+
+	meta_txt <- gsub(")", "", meta_txt)
+	meta_txt <- gsub(",", "", meta_txt)
+	meta_txt <- gsub("_", "", meta_txt)
+	meta_txt <- gsub("'", "", meta_txt)
+	meta_txt <- gsub("‘", "", meta_txt)
+	meta_txt <- gsub("\\.", "", meta_txt)
+	meta_txt <- gsub(":", ",", meta_txt)
+	meta_txt <- gsub("\\|", "", meta_txt)
+
   state <- strsplit(meta_txt[1], " ")[[1]]
   state <- state[nchar(state) > 1]
   state <- state[length(state)]
+  state <- gsub("-", "", state)
 
   name <- strsplit(meta_txt[2], "-")[[1]][2]
+	name <- strsplit(name, " ")[[1]]
+
+	fuzzy_strip_word <- function(txt, dt){
+		bad_word_pos <- agrep(txt, tolower(dt))
+		if(length(bad_word_pos) > 0){
+			dt <- dt[-bad_word_pos]
+		}
+		dt
+	}
+
+	name <- fuzzy_strip_word("eutrophic", name)
+	name <- fuzzy_strip_word("mesotrophic", name)
+	name <- fuzzy_strip_word("oligotrophic", name)
+
+	name <- trimws(paste(name, collapse = " "))
+
   name <- strsplit(name, ",")[[1]][1]
   name <- strsplit(name, "\\(")[[1]][1]
   name <- gsub("\\.", "", name)
@@ -47,7 +86,6 @@ parse_metadata <- function(meta_txt){
 
   county <- strsplit(meta_txt[3], "-")[[1]][2]
   county <- trimws(county)
-  county <- gsub(":", ",", county)
 
   storet_code <- strsplit(meta_txt[4], "-")[[1]][2]
   storet_code <- strsplit(storet_code, " ")[[1]][2]
@@ -150,7 +188,7 @@ read_ocr_dt <- function(dt, char_pos = NA, section_name){
 
   # check nes_get(nes_file, 15) preserves tp?
 
-  dt[1:length(dt) %in% grep("9.{3}", dt)] <- NA # set multiple 9s to NA
+  dt[1:length(dt) %in% grep("99.{3}", dt)] <- NA # set multiple 9s to NA
   # dt[1:length(dt) %in% grep("(9){2}", dt)] <- NA # set multiple 9s to NA
 
   num_pos <- grep("[[:digit:]]", dt)
