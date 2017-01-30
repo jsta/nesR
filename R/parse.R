@@ -170,7 +170,19 @@ parse_morpho <- function(morpho_txt){
   # coerce appropriate data to numerics
   dt <- read_ocr_dt(dt, 1, "morpho")
 
-  lake_type <- dt[1]
+  fuzzy_replace_word <- function(dt){
+  	bad_word_pos <- agrep("impoundment", tolower(dt))
+  	if(length(bad_word_pos) > 0){
+  		dt <- "IMPOUNDMENT"
+  	}
+  	bad_word_pos <- agrep("natural", tolower(dt))
+  	if(length(bad_word_pos) > 0){
+  		dt <- "NATURAL"
+  	}
+  	dt[1]
+  }
+
+  lake_type <- fuzzy_replace_word(dt[1])
   drainage_area <- dt[2]
   surface_area <- dt[3]
   mean_depth <- dt[4]
