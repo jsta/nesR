@@ -33,26 +33,26 @@ library(nesR)
 ``` r
 nes_file <- system.file("extdata/national-eutrophication-survey_477.PDF", 
                         package = "nesR")
-
-parse_nes(nes_get(nes_file, 11))
-#> Warning in read_ocr_dt(dt, 1, "morpho"): The following morpho positions may
-#> have bad OCR: 3
+res <- nes_get(nes_file, 89)
+parse_nes(res)
 #> Warning in read_ocr_dt(strsplit(nut_txt, " ")[[5]], section_name = "nuts"):
-#> The following nuts positions may have bad OCR: 6
-#>     state     name county storet_code lake_type drainage_area surface_area
-#> 1 ARIZONA BIG LAKE APACHE        0401   NATURAL          <NA>         <NA>
-#>   mean_depth total_inflow retention_time alkalinity conductivity sechhi
-#> 1        4.4         <NA>           <NA>         77          101    2.9
-#>      tp   po4  tin   tn p_pnt_source_muni p_pnt_source_industrial
-#> 1 0.032 0.007 0.09 0.82              <NA>                    <NA>
-#>   p_pnt_source_septic p_nonpnt_source p_total n_pnt_source_muni
-#> 1                <NA>            <NA>    <NA>              <NA>
-#>   n_pnt_source_industrial n_pnt_source_septic n_nonpnt_source n_total
-#> 1                    <NA>                <NA>            <NA>    <NA>
-#>   p_total_out p_percent_retention p_surface_area_loading n_total_out
-#> 1        <NA>                <NA>                   <NA>        <NA>
-#>   n_percent_retention n_surface_area_loading
-#> 1                <NA>                   <NA>
+#> The following nuts positions may have bad OCR: 3
+#>    state      name                county storet_code   lake_type
+#> 1 NEVADA LAKE MEAD CLARK. NY; MOHAVE. Az        3201 IMPOUNDMENT
+#>   drainage_area surface_area mean_depth total_inflow retention_time
+#> 1      434601.8         <NA>       59.1       377.34            3.5
+#>   alkalinity conductivity sechhi    tp   po4  tin   tn p_pnt_source_muni
+#> 1        136          815    5.9 0.016 0.005 0.34 0.55            322055
+#>   p_pnt_source_industrial p_pnt_source_septic p_nonpnt_source p_total
+#> 1                    <NA>                <NA>              10 3370770
+#>   n_pnt_source_muni n_pnt_source_industrial n_pnt_source_septic
+#> 1              <NA>              6426644444                 375
+#>   n_nonpnt_source  n_total p_total_out p_percent_retention
+#> 1            <NA> 26880405      247325                  93
+#>   p_surface_area_loading n_total_out n_percent_retention
+#> 1                   6.23        <NA>                  55
+#>   n_surface_area_loading
+#> 1                   45.3
 ```
 
 ### Build database

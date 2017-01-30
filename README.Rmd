@@ -53,8 +53,8 @@ library(nesR)
 ```{r eval=TRUE}
 nes_file <- system.file("extdata/national-eutrophication-survey_477.PDF", 
                         package = "nesR")
-
-parse_nes(nes_get(nes_file, 11))
+res <- nes_get(nes_file, 89)
+parse_nes(res)
 ```
 
 ### Build database

@@ -1,6 +1,7 @@
 # Makefile to setup OCR computing environment - assumes Debian/Ubuntu
 # git clone https://github.com/jsta/nesR.git
 # cd nesR
+# chmod +x INSTALL
 # ./INSTALL
 
 sudo add-apt-repository ppa:marutter/rrutter
