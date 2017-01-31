@@ -106,6 +106,9 @@ parse_metadata <- function(meta_txt){
   storet_code <- gsub("\u2014", "-", storet_code) # long dash
  	storet_candiates <- c(strsplit(storet_code, "-")[[1]][2],
  												strsplit(storet_code, "\\*")[[1]][2])
+ 	if(all(is.na(storet_candiates))){
+		storet_candiates <- strsplit(storet_code, " ")[[1]][4]
+ 	}
  	storet_code <- storet_candiates[!is.na(storet_candiates)]
   storet_code <- strsplit(storet_code, " ")[[1]][2]
   # storet_code <- as.numeric(storet_code)
@@ -210,10 +213,11 @@ read_ocr_dt <- function(dt, char_pos = NA, section_name){
 
   # check nes_get(nes_file, 15) preserves tp?
 
-  dt[1:length(dt) %in% grep("99.{3}", dt)] <- NA # set multiple 9s to NA
+  dt[1:length(dt) %in% grep("999.{3}", dt)] <- NA # set multiple 9s to NA
   # dt[1:length(dt) %in% grep("(9){2}", dt)] <- NA # set multiple 9s to NA
 
   num_pos <- grep("[[:digit:]]", dt)
+  dt[num_pos] <- sapply(dt[num_pos], letters_to_numbers)
 
   dt[!(1:length(dt) %in% char_pos)] <-
     suppressWarnings(as.numeric(dt[!(1:length(dt) %in% char_pos)]))
@@ -241,4 +245,9 @@ fuzzy_replace_word <- function(txt, dt, len = 1){
 		dt <- res
 	}
 	paste0(strsplit(dt, " ")[[1]][1:len], collapse = " ")
+}
+
+letters_to_numbers <- function(txt){
+	key <- data.frame(letters = c("I"), numbers = c("1"), stringsAsFactors = FALSE)
+	res <- stringr::str_replace(txt, key[1, 1], key[1, 2])
 }
