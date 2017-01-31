@@ -9,19 +9,20 @@
 #' }
 
 parse_nes <- function(ocr_txt){
+
   morpho_pos <- grep("^1. |^I. |^I.-|\\sI\\.\\s|^\\'I\\.|^l\\.", ocr_txt)
   phys_chem_pos <- grep("^II\\. | PHYSICAL|^11\\.|^I\\]\\.", ocr_txt)
   bio_pos <- grep("III\\. | BIOLOGICAL |111\\.|III\\.", ocr_txt)
   nut_pos <- grep("iv\\.|1v\\.| nutrient loading", tolower(ocr_txt))
   # c(morpho_pos, phys_chem_pos, bio_pos, nut_pos)
 
-  if(length(morpho_pos) == 0 | any(morpho_pos > 8)){
+  if(length(morpho_pos) == 0 | any(morpho_pos > 8) | length(morpho_pos) > 1){
   	morpho_pos <- 5
   }
   if(length(phys_chem_pos) > 1){
   	phys_chem_pos <- 9
   }
-  if(length(bio_pos) == 0){
+  if(length(bio_pos) == 0 | length(bio_pos) > 1){
   	bio_pos <- 13
   }
 
@@ -61,13 +62,21 @@ parse_metadata <- function(meta_txt){
 
   state <- strsplit(meta_txt[1], " ")[[1]]
   state <- state[nchar(state) > 1]
-  if(grep("^1N$|^IN$", state) < (length(state) - 1)){
-  	state <- paste(state[(length(state)-1):length(state)], collapse = " ")
-  	state_length <- 2
+
+  in_position <- grep("^1N$|^IN$", state)
+  if(length(in_position) > 0){
+  	if(in_position < (length(state) - 1)){
+  		state <- paste(state[(length(state)-1):length(state)], collapse = " ")
+  		state_length <- 2
+  	}else{
+  		state <- state[length(state)]
+  		state_length <- 1
+  	}
   }else{
   	state <- state[length(state)]
   	state_length <- 1
   }
+
   state <- gsub("-", "", state)
 	state <- fuzzy_replace_word(toupper(state.name), state, state_length)
 
@@ -97,9 +106,11 @@ parse_metadata <- function(meta_txt){
 
   storet_code <- substring(meta_txt[4], 0, 30)
   storet_code <- gsub("\u2014", "-", storet_code) # long dash
-  storet_code <- strsplit(storet_code, "-")[[1]][2]
+ 	storet_candiates <- c(strsplit(storet_code, "-")[[1]][2],
+ 												strsplit(storet_code, "\\*")[[1]][2])
+ 	storet_code <- storet_candiates[!is.na(storet_candiates)]
   storet_code <- strsplit(storet_code, " ")[[1]][2]
-  storet_code <- as.numeric(storet_code)
+  # storet_code <- as.numeric(storet_code)
 
   list(state = state, name = name, county = county, storet_code = storet_code)
 }
