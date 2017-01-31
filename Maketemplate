@@ -28,3 +28,6 @@ $(PDFSOURCE)/res.csv: cleancsvs
 	Rscript -e 'flist <- list.files(pattern  = "clean.csv", include.dirs = TRUE); res <- do.call("rbind", lapply(flist, function(x) read.csv(x, stringsAsFactors = FALSE, colClasses = "character"))); res <- res[order(res[,"pagenum"]),]; write.csv(res, "res.csv", row.names = FALSE)'
 
 all: $(PDFSOURCE)/res.csv
+
+clean:
+	rm $(PDFSOURCE)/*clean.csv
