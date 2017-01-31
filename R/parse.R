@@ -62,7 +62,6 @@ parse_metadata <- function(meta_txt){
 
   state <- strsplit(meta_txt[1], " ")[[1]]
   state <- state[nchar(state) > 1]
-
   in_position <- grep("^1N$|^IN$", state)
   if(length(in_position) > 0){
   	if(in_position < (length(state) - 1)){
@@ -76,7 +75,6 @@ parse_metadata <- function(meta_txt){
   	state <- state[length(state)]
   	state_length <- 1
   }
-
   state <- gsub("-", "", state)
 	state <- fuzzy_replace_word(toupper(state.name), state, state_length)
 
@@ -231,12 +229,14 @@ read_ocr_dt <- function(dt, char_pos = NA, section_name){
 
 fuzzy_replace_word <- function(txt, dt, len = 1){
 	replace_word <- function(txt, dt){
-		bad_word_pos <- agrep(txt, toupper(dt), max.distance = 0.2)
+		bad_word_pos <- agrep(txt, toupper(dt), max.distance = 0.23)
 		if(length(bad_word_pos) > 0){
 			txt
 		}
 	}
 	res <- unlist(lapply(txt, function(x) replace_word(x, dt)))
+	res <- res[which.min(abs(nchar(res) - nchar(dt)))]
+
 	if(length(res) > 0){
 		dt <- res
 	}
