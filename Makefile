@@ -14,3 +14,6 @@ runmakefile: $(PDFSOURCE)/Makefile pagelist
 	make -C $(PDFSOURCE) all
 
 all: runmakefile
+
+clean:
+	rm $(PDFSOURCE)/*clean.csv
