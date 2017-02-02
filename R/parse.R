@@ -135,6 +135,7 @@ parse_phys_chem <- function(phys_chem_txt){
 parse_nuts <- function(nut_txt){
 
   handle_input_nutrient <- function(dt, prefix){
+  	dt <- unlist(dt)
     pnt_source_muni       <- dt[2]
     pnt_source_industrial <- dt[3]
     pnt_source_septic     <- dt[4]
@@ -151,6 +152,7 @@ parse_nuts <- function(nut_txt){
   }
 
   handle_output_nutrient <- function(dt, prefix){
+  	dt <- unlist(dt)
     total_out            <- dt[2]
     percent_retention    <- dt[3]
     surface_area_loading <- dt[4]
