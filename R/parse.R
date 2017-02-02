@@ -111,6 +111,11 @@ parse_metadata <- function(meta_txt){
  	}
  	storet_code <- storet_candiates[!is.na(storet_candiates)]
   storet_code <- strsplit(storet_code, " ")[[1]][2]
+  storet_code <- gsub(",", "", storet_code)
+
+	if(length(grep("[D-Z]|\\&|\\#|[d-z]", storet_code)) > 0 | is.na(as.numeric(substring(storet_code, 0, 1)))){
+		storet_code <- NA
+	}
   # storet_code <- as.numeric(storet_code)
 
   list(state = state, name = name, county = county, storet_code = storet_code)
@@ -215,7 +220,11 @@ read_ocr_dt <- function(dt, char_pos = NA, section_name){
 
   # check nes_get(nes_file, 15) preserves tp?
 
-  dt[1:length(dt) %in% grep("999.{3}", dt)] <- NA # set multiple 9s to NA
+  dt[1:length(dt) %in% grep("999.{2}", dt)] <- NA # set multiple 9s to NA
+  dt[1:length(dt) %in% grep("00000.{2}", dt)] <- NA # set multiple 9s to NA
+  dt[1:length(dt) %in% grep("55555", dt)] <- NA # set multiple 9s to NA
+  dt[1:length(dt) %in% grep("44444", dt)] <- NA # set multiple 9s to NA
+  dt[nchar(dt) > 9] <- NA
   # dt[1:length(dt) %in% grep("(9){2}", dt)] <- NA # set multiple 9s to NA
 
   num_pos <- grep("[[:digit:]]", dt)
