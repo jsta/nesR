@@ -193,15 +193,14 @@ parse_morpho <- function(morpho_txt){
   if(length(dt) < 4){ # see if morpho numbers are missing
     dt <- c(dt, paste0(rep(NA, 6), collapse = " "))
   }
-
   dt <- dt[[4]]
 
   # coerce appropriate data to numerics
-  dt <- read_ocr_dt(dt, 1, "morpho")
-
-  lake_type <- fuzzy_replace_word(toupper(c("impoundment", "natural")), dt[1])
+  lake_type <- dt[grep("[[:alpha:]]", dt)][1]
+  lake_type <- fuzzy_replace_word(toupper(c("impoundment", "natural")), lake_type)
   if(nchar(lake_type) < 2){lake_type <- NA}
 
+  dt <- unlist(read_ocr_dt(dt, 1, "morpho"))
   drainage_area <- dt[2]
   surface_area <- dt[3]
   mean_depth <- dt[4]
