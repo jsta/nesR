@@ -1,5 +1,5 @@
 Package: nesR
-Title: Scrape Data from the National Eutrophication Survey archival PDF
+Title: Scrape Data from National Eutrophication Survey archival PDFs
 Version: 0.1
 Authors@R: person("Joseph", "Stachelek", email = "stachel2@msu.edu", role = c("aut", "cre"))
 Description: Scrape Data from the National Eutrophication Survey archival PDF.
