@@ -59,7 +59,7 @@ parse_nes(res)
 
 ### Build database
 
-As written, building the NES database requires GNU Make and the ability to run `R` commands using the `Rscript` command-line utility (aka doesn't work on Windows).
+As written, building the NES database requires GNU Make and the ability to run `R` commands using the `Rscript` command-line utility (aka doesn't work on Windows). For best results, use a machine with at least 4 GB RAM.
 
 ```{bash eval=FALSE}
 make PDFSOURCE=474 all
