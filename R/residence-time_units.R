@@ -12,9 +12,12 @@ get_residence_units <- function(f_name){
 	dt <- read.csv(f_name, stringsAsFactors = FALSE)
 
 	if(length(grep("year", tolower(dt))) > 0){
-		return("year")
-		}
+		return("years")
+	}
+
 	if(length(grep("day", tolower(dt))) > 0){
-		return("day")
-		}
+		return("days")
+	}
+
+	NA
 }
