@@ -8,7 +8,8 @@ Imports: purrr,
          tesseract,
          magick,
          tiff,
-         png
+         png,
+         stringr
 Depends:
     R (>= 3.3.2)
 License: GPL-3 + file LICENSE
