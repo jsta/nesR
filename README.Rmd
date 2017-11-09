@@ -3,7 +3,7 @@ output: github_document
 bibliography: 
   - inst/references.bib
 nocite:  |
-  @brett_review_2007, @reckhow_empirical_1988
+  @brett_review_2007, @reckhow_empirical_1988, @StachelekNationalEutrophicationSurvey2017
 csl: inst/ecology.csl
 ---
 

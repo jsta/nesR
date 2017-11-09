@@ -70,3 +70,5 @@ References
 Brett, M. T., and M. M. Benjamin. 2007. A review and reassessment of lake phosphorus retention and the nutrient loading concept. Freshwater Biology.
 
 Reckhow, K. H. 1988. Empirical models for trophic state in southeastern US lakes and reservoirs.
+
+Stachelek, J., C. Ford, D. Kincaid, K. King, H. Miller, and R. Nagelkirk. 2017. The National Eutrophication Survey: Lake characteristics and historical nutrient concentrations. Earth System Science Data Discussions:1–11.
