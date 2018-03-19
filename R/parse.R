@@ -214,6 +214,12 @@ parse_bio <- function(morpho_txt){
 	dt  <- strsplit(morpho_txt, " ")
 	chl <- dt[[4]][1]
 
+	if(length(grep("\\.", chl)) < 1){
+		substr(chl,
+					 stringr::str_locate(chl, "0")[2],
+					 stringr::str_locate(chl, "0")[2]) <- "."
+	}
+
 	list(chl = chl)
 }
 
