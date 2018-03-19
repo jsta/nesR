@@ -18,4 +18,3 @@ f_name <- "474/100.csv"
 get_residence_units(f_name)
 }
 }
-

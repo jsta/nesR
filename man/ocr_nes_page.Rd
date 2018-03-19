@@ -21,4 +21,3 @@ tif_clean <- extract_nes_page(nes_file, nes_page)
 ocr_nes_page(tif_clean)
 }
 }
-

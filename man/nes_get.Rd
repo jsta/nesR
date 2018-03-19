@@ -22,4 +22,3 @@ nes_page <- 12
 nes_get(nes_file, nes_page)
 }
 }
-

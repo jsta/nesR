@@ -19,4 +19,3 @@ parse_nes(read.csv(system.file(
  stringsAsFactors = FALSE)[,1])
 }
 }
-

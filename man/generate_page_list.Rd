@@ -19,4 +19,3 @@ generate_page_list
 generate_page_list(477)
 }
 }
-

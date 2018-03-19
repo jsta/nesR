@@ -22,4 +22,3 @@ nes_page <- 11
 tif_clean <- extract_nes_page(nes_file, nes_page)
 }
 }
-
