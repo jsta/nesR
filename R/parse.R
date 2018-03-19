@@ -26,23 +26,21 @@ parse_nes <- function(ocr_txt){
   	bio_pos <- 13
   }
 
-
-  metadata <- parse_metadata(ocr_txt[1:(morpho_pos - 1)])
+  metadata    <- parse_metadata(ocr_txt[1:(morpho_pos - 1)])
 
   morphometry <- parse_morpho(ocr_txt[morpho_pos:(phys_chem_pos - 1)])
 
-  phys_chem <- parse_phys_chem(ocr_txt[phys_chem_pos:(bio_pos - 1)])
+  phys_chem   <- parse_phys_chem(ocr_txt[phys_chem_pos:(bio_pos - 1)])
 
-  # bio <- ocr_txt[bio_pos:(nut_pos - 1)]
+  bio         <- parse_bio(ocr_txt[bio_pos:(nut_pos - 1)])
 
-  nutrients <- parse_nuts(ocr_txt[nut_pos:length(ocr_txt)])
-
+  nutrients   <- parse_nuts(ocr_txt[nut_pos:length(ocr_txt)])
 
   res <- list(metadata = metadata,
               morphometry = morphometry,
               phys_chem = phys_chem,
-              # bio = bio,
-              nutrients = nutrients
+              nutrients = nutrients,
+  						bio = bio
   )
 
   data.frame(purrr::flatten(res), stringsAsFactors = FALSE)
@@ -210,6 +208,13 @@ parse_morpho <- function(morpho_txt){
   list(lake_type = lake_type, drainage_area = drainage_area,
        surface_area = surface_area, mean_depth = mean_depth,
        total_inflow = total_inflow, retention_time = retention_time)
+}
+
+parse_bio <- function(morpho_txt){
+	dt  <- strsplit(morpho_txt, " ")
+	chl <- dt[[4]][1]
+
+	list(chl = chl)
 }
 
 read_ocr_dt <- function(dt, char_pos = NA, section_name){
